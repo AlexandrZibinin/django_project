@@ -22,3 +22,9 @@ def product(request):
     product = Product.objects.all()
     context = {'products': product}
     return render(request, 'product.html', context)
+
+def one_product(request, pk):
+    product = Product.objects.get(pk=pk)
+    context = {'product':product}
+    return render(request, 'one_product.html', context)
+
