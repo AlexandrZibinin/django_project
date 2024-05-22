@@ -1,4 +1,4 @@
-{% extends 'home.html' %}
+{% extends 'catalog/home.html' %}
 {% load image %}
 
 
@@ -21,6 +21,7 @@
 
                     </ul>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                    <a class="btn btn-primary" href="{% url 'catalog:one_product' product.pk %}" role="button">Подробнее</a>
                 </div>
             </div>
         </div>

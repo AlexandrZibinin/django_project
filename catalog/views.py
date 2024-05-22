@@ -4,7 +4,7 @@ from catalog.models import Product
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "catalog/home.html")
 
 
 def contacts(request):
@@ -16,15 +16,15 @@ def contacts(request):
             f.write(name + "\n")
             f.write(phone + "\n")
             f.write(message + "\n")
-    return render(request, "contacts.html")
+    return render(request, "catalog/contacts.html")
 
 def product(request):
     product = Product.objects.all()
     context = {'products': product}
-    return render(request, 'product.html', context)
+    return render(request, 'catalog/product.html', context)
 
 def one_product(request, pk):
     product = Product.objects.get(pk=pk)
     context = {'product':product}
-    return render(request, 'one_product.html', context)
+    return render(request, 'catalog/one_product.html', context)
 
