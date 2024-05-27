@@ -12,6 +12,9 @@ psycopg2-binary = "^2.9.9"
 black = "^24.4.2"
 pillow = "^10.3.0"
 ipython = "^8.24.0"
+articles = "^0.1.0"
+article = "^0.1.1"
+pytils = "^0.4.1"
 
 
 [build-system]
