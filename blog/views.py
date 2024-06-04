@@ -62,9 +62,9 @@ class BlogUpdateView(UpdateView):
         "image",
         "public",
     )
-    def get_success_url(self):
-        return reverse_lazy('blog:blog_view', kwargs={'pk': self.object.pk})
 
+    def get_success_url(self):
+        return reverse_lazy("blog:blog_view", kwargs={"pk": self.object.pk})
 
     def form_valid(self, form):
         if form.is_valid():
