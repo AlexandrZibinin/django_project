@@ -4,7 +4,7 @@ from random import sample
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.views import PasswordResetView
 from django.core.mail import send_mail
-from django.http import request
+from django.http import request, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
@@ -45,24 +45,28 @@ def email_verification(request, token):
 class UserPasswordResetView(PasswordResetView):
     model = User
     form_class = UserPasswordResetForm
-    success_url = reverse_lazy("users:login")
+    template_name = 'users/password_reset_form.html'
+    success_url = reverse_lazy('users:login')
 
     def generate_password(self):
         symbols = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'
         return ''.join(sample(symbols, 8))
 
     def form_valid(self, form):
-        user = form.save()
-        new_password = self.generate_password()
-        hashed_password = make_password(new_password)
-        user.set_password(hashed_password)
-        user.save()
-        send_mail(
-            subject='Новый пароль',
-            message=f'Ваш новый пароль - {new_password}',
-            from_email=EMAIL_HOST_USER,
-            recipient_list=[user.email],
-        )
+        if self.request.method == 'POST':
+            user_email = self.request.POST.get('email')
+            user = User.objects.filter(email=user_email).first()
+
+            new_password = self.generate_password()
+            user.set_password(new_password)
+            user.save()
+            send_mail(
+                subject='Новый пароль',
+                message=f'Ваш новый пароль - {new_password}',
+                from_email=EMAIL_HOST_USER,
+                recipient_list=[user.email],
+            )
+            return HttpResponseRedirect(reverse('users:login'))
         return super().form_valid(form)
 
 
