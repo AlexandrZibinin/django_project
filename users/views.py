@@ -1,3 +1,4 @@
+from django.contrib.auth.views import PasswordResetView
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -35,3 +36,10 @@ def email_verification(request, token):
     user.is_active = True
     user.save()
     return redirect(reverse("users:login"))
+
+class UserPasswordResetView(PasswordResetView):
+    model = User
+
+
+
+
