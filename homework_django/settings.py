@@ -1,6 +1,8 @@
 import os.path
 from pathlib import Path
 
+from config_psw import mail_password
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -110,7 +112,7 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
 EMAIL_HOST_USER = 'PVCstyle@yandex.ru'
-EMAIL_HOST_PASSWORD = 'vnutbchtsqbomvwu'  #os.environ.get('SKY_MAIL') не работает, почему?
+EMAIL_HOST_PASSWORD = mail_password  #os.environ.get('SKY_MAIL') не работает, почему?
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
