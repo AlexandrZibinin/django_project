@@ -7,7 +7,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-django = "^5.0.4"
 psycopg2-binary = "^2.9.9"
 black = "^24.4.2"
 pillow = "^10.3.0"
@@ -16,6 +15,7 @@ articles = "^0.1.0"
 article = "^0.1.1"
 pytils = "^0.4.1"
 django-phone-field = "^1.8.1"
+django = "4.2.2"
 
 
 [build-system]
