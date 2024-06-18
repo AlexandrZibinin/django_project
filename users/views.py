@@ -25,14 +25,15 @@ class UserCreateView(CreateView):
         user.token = token
         user.save()
         host = self.request.get_host()
-        url = f'http://{host}/users/email-confirm/{token}/'
+        url = f"http://{host}/users/email-confirm/{token}/"
         send_mail(
-            subject='Подтверждение почты',
-            message=f'Ссылка для подтверждения - {url}',
+            subject="Подтверждение почты",
+            message=f"Ссылка для подтверждения - {url}",
             from_email=EMAIL_HOST_USER,
             recipient_list=[user.email],
         )
         return super().form_valid(form)
+
 
 def email_verification(request, token):
     user = get_object_or_404(User, token=token)
@@ -40,39 +41,30 @@ def email_verification(request, token):
     user.save()
     return redirect(reverse("users:login"))
 
+
 class UserPasswordResetView(PasswordResetView):
     model = User
     form_class = UserPasswordResetForm
-    template_name = 'users/password_reset_form.html'
-    success_url = reverse_lazy('users:login')
+    template_name = "users/password_reset_form.html"
+    success_url = reverse_lazy("users:login")
 
     def generate_password(self):
-        symbols = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'
-        return ''.join(sample(symbols, 8))
+        symbols = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"
+        return "".join(sample(symbols, 8))
 
     def form_valid(self, form):
-        if self.request.method == 'POST':
-            user_email = self.request.POST.get('email')
+        if self.request.method == "POST":
+            user_email = self.request.POST.get("email")
             user = User.objects.filter(email=user_email).first()
 
             new_password = self.generate_password()
             user.set_password(new_password)
             user.save()
             send_mail(
-                subject='Новый пароль',
-                message=f'Ваш новый пароль - {new_password}',
+                subject="Новый пароль",
+                message=f"Ваш новый пароль - {new_password}",
                 from_email=EMAIL_HOST_USER,
                 recipient_list=[user.email],
             )
-            return HttpResponseRedirect(reverse('users:login'))
+            return HttpResponseRedirect(reverse("users:login"))
         return super().form_valid(form)
-
-
-
-
-
-
-
-
-
-

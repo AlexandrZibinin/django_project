@@ -34,8 +34,12 @@ class Product(models.Model):
         max_digits=20, decimal_places=2, verbose_name="Цена за покупку"
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
-    owner = models.ForeignKey(User, verbose_name='Создатель', blank=True, null=True, on_delete=models.SET_NULL)
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Дата последнего изменения"
+    )
+    owner = models.ForeignKey(
+        User, verbose_name="Создатель", blank=True, null=True, on_delete=models.SET_NULL
+    )
 
     def __str__(self):
         return f"{self.name}"
