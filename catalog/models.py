@@ -40,6 +40,9 @@ class Product(models.Model):
     owner = models.ForeignKey(
         User, verbose_name="Создатель", blank=True, null=True, on_delete=models.SET_NULL
     )
+    is_publish = models.BooleanField(
+        null=False, default=False, verbose_name="Признак публикации"
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -47,6 +50,11 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
+        permissions = [
+            ("set_publish_status", "Can publish"),
+            ("can_edit_description", "Can edit description"),
+            ("can_edit_category", "Can edit category"),
+        ]
 
 
 class Version(models.Model):
