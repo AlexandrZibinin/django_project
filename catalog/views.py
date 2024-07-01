@@ -1,7 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
-from django.http import request
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -13,7 +12,8 @@ from django.views.generic import (
 )
 
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
+from catalog.services import get_category_from_cache
 
 
 class ProductListView(ListView, LoginRequiredMixin):
@@ -79,9 +79,9 @@ class ProductUpdateView(UpdateView, LoginRequiredMixin):
         if user == self.object.owner:
             return ProductForm
         if (
-            user.has_perm("catalog.set_publish_status")
-            and user.has_perm("catalog.can_edit_description")
-            and user.has_perm("catalog.can_edit_category")
+                user.has_perm("catalog.set_publish_status")
+                and user.has_perm("catalog.can_edit_description")
+                and user.has_perm("catalog.can_edit_category")
         ):
             return ProductModeratorForm
         raise PermissionDenied
@@ -94,3 +94,12 @@ class ProductDeleteView(DeleteView, LoginRequiredMixin):
 
 class ContactsView(TemplateView):
     template_name = "catalog/contacts_view.html"
+
+
+class CategoryListView(ListView, LoginRequiredMixin):
+    model = Category
+    success_url = reverse_lazy("catalog:home")
+
+    def get_queryset(self):
+        return get_category_from_cache()
+

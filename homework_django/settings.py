@@ -1,14 +1,19 @@
 import os.path
 from pathlib import Path
 
-from config_psw import mail_password
+from dotenv import load_dotenv
+
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-7_!5-1$mezk5!xi^&32wint4vut*gi(iyp4=_)09hnw!23h)k9"
+dot_env = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path=dot_env)
 
-DEBUG = True
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+DEBUG = os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = []
 
@@ -58,8 +63,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "shop",
-        "USER": "postgres",
-        "PASSWORD": "5770",
+        "USER": os.getenv("BD_USER"),
+        "PASSWORD": os.getenv("BD_PASS"),
         "HOST": "localhost",
         "PORT": "5432",
     }
@@ -111,8 +116,17 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
-EMAIL_HOST_USER = "PVCstyle@yandex.ru"
-EMAIL_HOST_PASSWORD = mail_password  # os.environ.get('SKY_MAIL') не работает, почему?
+EMAIL_HOST_USER = os.getenv('MAIL')
+EMAIL_HOST_PASSWORD = os.getenv('MAIL_PASS')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
+
+CACHE_ENABLED = True
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://localhost:6379",
+        }
+    }

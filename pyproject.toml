@@ -16,6 +16,8 @@ article = "^0.1.1"
 pytils = "^0.4.1"
 django-phone-field = "^1.8.1"
 django = "4.2.2"
+python-dotenv = "^1.0.1"
+redis = "^5.0.7"
 
 
 [build-system]

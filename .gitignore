@@ -163,3 +163,5 @@ cython_debug/
 /answer.txt
 
 config_psw.py
+
+.env
